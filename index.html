@@ -73,9 +73,9 @@
                     .attr('y', d => yScale(yValue(d)));
         }
 
-
-        json(url).then(data => {
-            console.log(data);
+        // Make http request using json method from d3
+        json(url).then(sourceData => {
+            const { data } = sourceData;
 
             render(data);
         });
