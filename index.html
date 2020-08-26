@@ -47,6 +47,11 @@
                 .domain([0, max(data, d => d[1])])
                 .range([0, width]);
 
+            // Vertical scale
+            const yScale = scaleBand()
+                .domain(data.map(d => d[0]))
+                .range([0, height]);
+
             svg.selectAll('rect').data(data)
                 .enter().append('rect')
                     .attr('width', 200)
