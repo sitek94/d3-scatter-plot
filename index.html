@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,14 +18,27 @@
         }
     </style>
 </head>
+
 <body>
     <h1 id="title">Gross Domestic Product (GDP)</h1>
     <svg></svg>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script>
-        
+        // D3 imports
+        const { select, json, scaleLinear, scaleBand, max } = d3;
+
+        // Source data
+        const url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json';
+
+        const width = 500;
+        const height = 500;
+
+        const svg = select('svg')
+            .attr('width', width)
+            .attr('height', height);
 
 
     </script>
 </body>
+
 </html>
