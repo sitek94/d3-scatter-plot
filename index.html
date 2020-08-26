@@ -37,6 +37,20 @@
             .attr('width', width)
             .attr('height', height);
 
+        const render = data => {
+
+            svg.selectAll('rect').data(data)
+                .enter().append('rect')
+                    .attr('width', 200)
+                    .attr('height', 200)
+        }
+
+
+        json(url).then(data => {
+            console.log(data);
+
+            render(data);
+        })
 
     </script>
 </body>
