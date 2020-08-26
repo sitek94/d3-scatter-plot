@@ -54,8 +54,9 @@
 
             svg.selectAll('rect').data(data)
                 .enter().append('rect')
-                    .attr('width', 200)
-                    .attr('height', 200)
+                    .attr('width', d => xScale(d[1]))
+                    .attr('height', d => yScale.bandwith())
+                    .attr('y', d => yScale(d[0]))
         }
 
 
