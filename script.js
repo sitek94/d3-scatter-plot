@@ -39,14 +39,18 @@ const render = (sourceData) => {
     value: d[1]
   }));
 
+  const dateStrings = sourceData.data.map(d => d[0]);
+
   console.log(sourceData);
   
-  const xMin = new Date(sourceData.from_date);
-  const xMax = new Date(sourceData.to_date);
+  
 
   // Value accessors
   const xValue = (d) => d.date;
   const yValue = (d) => d.value;
+
+  const xMin = min(data, xValue);
+  const xMax = max(data, xValue);
 
   // Margins
   const margin = { top: 50, right: 20, bottom: 20, left: 100 };
@@ -95,9 +99,12 @@ const render = (sourceData) => {
   g.selectAll('rect').data(data).enter()
     .append('rect')
       .attr('class', 'bar')
+      // Set data attributes for date and value
+      .attr('data-gdp', yValue)
+      .attr('data-date', (d, i) => dateStrings[i])
       .attr('width', barWidth)
-      .attr('height', (d) => yScale(0) - yScale(yValue(d)))
       .attr('x', (d) => xScale(xValue(d)))
+      .attr('height', (d) => yScale(0) - yScale(yValue(d)))
       .attr('y', (d) => yScale(yValue(d)));
 };
 
