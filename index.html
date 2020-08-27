@@ -75,7 +75,8 @@
             // y scale
             const yScale = scaleBand()
                 .domain(data.map(yValue))
-                .range([0, innerHeight]);
+                .range([0, innerHeight])
+                .padding(.2);
 
             // Group element
             const g = svg.append('g')
