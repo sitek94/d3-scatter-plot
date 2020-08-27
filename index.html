@@ -25,7 +25,13 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script>
         // D3 imports
-        const { select, json, scaleLinear, scaleBand, max } = d3;
+        const { 
+            select, 
+            json,
+            scaleLinear,
+            scaleBand,
+            max
+        } = d3;
 
         // Source data
         const url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json';
@@ -69,7 +75,7 @@
             g.selectAll('rect').data(data)
                 .enter().append('rect')
                     .attr('width', d => xScale(xValue(d)))
-                    .attr('height', d => yScale.bandwith())
+                    .attr('height', d => yScale.bandwidth())
                     .attr('y', d => yScale(yValue(d)));
         }
 
