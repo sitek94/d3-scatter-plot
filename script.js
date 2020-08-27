@@ -41,10 +41,6 @@ const render = (sourceData) => {
 
   const dateStrings = sourceData.data.map(d => d[0]);
 
-  console.log(sourceData);
-  
-  
-
   // Value accessors
   const xValue = (d) => d.date;
   const yValue = (d) => d.value;
@@ -97,32 +93,28 @@ const render = (sourceData) => {
   yAxisG.select('.domain').remove();
 
   // Create x axis g element
-  const xAxisG = g.append('g').call(xAxis)
+  g.append('g').call(xAxis)
     .attr('transform', `translate(0,${innerHeight})`)
     .attr('id', 'x-axis');
 
-  // Create div for the tooltip
+  // Tooltip div
   const tooltip = root.append('div')
     .attr('id', 'tooltip')
     .style('opacity', 0);
 
-  // Mouseover handler
+  // Mouse over
   const handleMouseover = (d, i) => {
     tooltip.transition()		
       .duration(200)		
       .style("opacity", .9);
-
-    
 
     tooltip.html('TEST TOOLTIP')
       .attr('data-date', dateStrings[i])
       .attr('data-gdp', yValue(d))
       .style("left", (d3.event.pageX) + "px")		
       .style("top", (d3.event.pageY - 28) + "px");	
-        
-
   }
-
+  // Mouse out
   const handleMouseout = () => {
     tooltip.transition()		
       .duration(500)		
@@ -133,13 +125,16 @@ const render = (sourceData) => {
   g.selectAll('rect').data(data).enter()
     .append('rect')
       .attr('class', 'bar')
-      // Set data attributes for date and value
+      // Data attributes
       .attr('data-gdp', yValue)
       .attr('data-date', (d, i) => dateStrings[i])
+      // Dimensions
       .attr('width', barWidth)
-      .attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => yScale(0) - yScale(yValue(d)))
+      // Position
+      .attr('x', (d) => xScale(xValue(d)))
       .attr('y', (d) => yScale(yValue(d)))
+      // Event handlers
       .on('mouseover', handleMouseover)
       .on('mouseout', handleMouseout);
 };
