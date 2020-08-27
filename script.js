@@ -4,6 +4,7 @@ const {
   json,
   scaleLinear,
   scaleBand,
+  scaleTime,
   min,
   max,
   axisLeft,
@@ -29,10 +30,23 @@ const svg = root.append('svg')
   .attr('height', height);
 
 // Render function
-const render = (data) => {
+const render = (sourceData) => {
+
+  // Format received data
+  // Transform nested arrays to objects with date and value prop
+  const data = sourceData.data.map(d => ({
+    date: new Date(d[0]),
+    value: d[1]
+  }));
+
+  console.log(sourceData);
+  
+  const yMin = new Date(sourceData.from_date);
+  const yMax = new Date(sourceData.to_date);
+
   // Value accessors
-  const xValue = (d) => d[1];
-  const yValue = (d) => d[0];
+  const xValue = (d) => d.value;
+  const yValue = (d) => d.date;
 
   // Margins
   const margin = { top: 50, right: 20, bottom: 20, left: 100 };
@@ -87,8 +101,7 @@ const render = (data) => {
 
 // Make http request using json method from d3
 json(url).then((sourceData) => {
-  const { data } = sourceData;
+  
 
-  // Render only part of the data during development
-  render(data.slice(0, 20));
+  render(sourceData);
 });
