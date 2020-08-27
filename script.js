@@ -57,7 +57,7 @@ const render = (sourceData) => {
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
   
-  const barWidth = innerHeight / data.length;
+  const barWidth = innerWidth / data.length;
 
   // x scale
   const xScale = scaleTime()
@@ -69,7 +69,7 @@ const render = (sourceData) => {
 
   // x scale
   const yScale = scaleLinear()
-    .domain([0, max(data, yValue)]).nice()
+    .domain([0, max(data, yValue)])
     .range([innerHeight, 0]);
 
   // y axis
@@ -84,6 +84,8 @@ const render = (sourceData) => {
   // Title 
   g.append('text')
     .attr('id', 'title')
+    .attr('text-anchor', 'middle')
+    .attr('x', innerWidth / 2)
     .attr('y', -10)
     .text('Gross Domestic Product (GDP)');
 
@@ -99,6 +101,34 @@ const render = (sourceData) => {
     .attr('transform', `translate(0,${innerHeight})`)
     .attr('id', 'x-axis');
 
+  // Create div for the tooltip
+  const tooltip = root.append('div')
+    .attr('id', 'tooltip')
+    .style('opacity', 0);
+
+  // Mouseover handler
+  const handleMouseover = (d, i) => {
+    tooltip.transition()		
+      .duration(200)		
+      .style("opacity", .9);
+
+    
+
+    tooltip.html('TEST TOOLTIP')
+      .attr('data-date', dateStrings[i])
+      .attr('data-gdp', yValue(d))
+      .style("left", (d3.event.pageX) + "px")		
+      .style("top", (d3.event.pageY - 28) + "px");	
+        
+
+  }
+
+  const handleMouseout = () => {
+    tooltip.transition()		
+      .duration(500)		
+      .style("opacity", 0);	
+  }
+
   // Append bars
   g.selectAll('rect').data(data).enter()
     .append('rect')
@@ -109,7 +139,9 @@ const render = (sourceData) => {
       .attr('width', barWidth)
       .attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => yScale(0) - yScale(yValue(d)))
-      .attr('y', (d) => yScale(yValue(d)));
+      .attr('y', (d) => yScale(yValue(d)))
+      .on('mouseover', handleMouseover)
+      .on('mouseout', handleMouseout);
 };
 
 // Make http request using json method from d3
