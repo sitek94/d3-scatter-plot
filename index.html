@@ -30,7 +30,9 @@
             json,
             scaleLinear,
             scaleBand,
-            max
+            max,
+            axisLeft,
+            axisBottom
         } = d3;
 
         // Source data
@@ -53,16 +55,16 @@
             const yValue = d => d[0];
 
             // Margins
-            const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+            const margin = { top: 20, right: 20, bottom: 20, left: 100 };
             const innerWidth = width - margin.left - margin.right;
             const innerHeight = height - margin.top - margin.bottom;
 
-            // Horizontal scale
+            // x scale
             const xScale = scaleLinear()
                 .domain([0, max(data, xValue)])
                 .range([0, innerWidth]);
 
-            // Vertical scale
+            // y scale
             const yScale = scaleBand()
                 .domain(data.map(yValue))
                 .range([0, innerHeight]);
@@ -70,6 +72,11 @@
             // Group element
             const g = svg.append('g')
                 .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Axes
+            g.append('g').call(axisLeft(yScale));
+            g.append('g').call(axisBottom(xScale))
+                .attr('transform', `translate(0,${innerHeight})`);
 
             // Render rectangles (bars)
             g.selectAll('rect').data(data)
@@ -83,7 +90,8 @@
         json(url).then(sourceData => {
             const { data } = sourceData;
 
-            render(data);
+            // Render only part of the data during development
+            render(data.slice(0, 20));
         });
 
     </script>
