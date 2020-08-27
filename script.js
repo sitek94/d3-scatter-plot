@@ -44,13 +44,19 @@ const render = (data) => {
     .domain([0, max(data, xValue)])
     .range([0, innerWidth]);
 
+  // x axis
+  const xAxis = axisBottom(xScale);
+
   // y scale
   const yScale = scaleBand()
     .domain(data.map(yValue))
     .range([0, innerHeight])
     .padding(0.2);
 
-  // Group element
+  // y axis
+  const yAxis = axisLeft(yScale);
+
+  // Create group element inside svg
   const g = svg
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`);
@@ -61,20 +67,22 @@ const render = (data) => {
     .attr('y', -10)
     .text('Gross Domestic Product (GDP)');
 
-  // Axes
-  g.append('g').call(axisLeft(yScale));
-  g.append('g')
-    .call(axisBottom(xScale))
-    .attr('transform', `translate(0,${innerHeight})`);
+  // Create y axis g element
+  const yAxisG = g.append('g').call(yAxis)
+    .attr('id', 'y-axis');
 
-  // Render rectangles (bars)
-  g.selectAll('rect')
-    .data(data)
-    .enter()
+  // Create x axis g element
+  const xAxisG = g.append('g').call(xAxis)
+    .attr('transform', `translate(0,${innerHeight})`)
+    .attr('id', 'x-axis');
+
+  // Append bars
+  g.selectAll('rect').data(data).enter()
     .append('rect')
-    .attr('width', (d) => xScale(xValue(d)))
-    .attr('height', (d) => yScale.bandwidth())
-    .attr('y', (d) => yScale(yValue(d)));
+      .attr('class', 'bar')
+      .attr('width', (d) => xScale(xValue(d)))
+      .attr('height', (d) => yScale.bandwidth())
+      .attr('y', (d) => yScale(yValue(d)));
 };
 
 // Make http request using json method from d3
