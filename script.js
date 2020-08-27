@@ -3,12 +3,12 @@ const {
   select,
   json,
   scaleLinear,
-  scaleBand,
   scaleTime,
   min,
   max,
   axisLeft,
   axisBottom,
+  format,
 } = d3;
 
 // Source data
@@ -73,7 +73,8 @@ const render = (sourceData) => {
     .range([innerHeight, 0]);
 
   // y axis
-  const yAxis = axisLeft(yScale);
+  const yAxis = axisLeft(yScale)
+    .tickSize(-innerWidth)
 
   // Create group element inside svg
   const g = svg
@@ -88,7 +89,10 @@ const render = (sourceData) => {
 
   // Create y axis g element
   const yAxisG = g.append('g').call(yAxis)
-    .attr('id', 'y-axis');
+    .attr('id', 'y-axis')
+    
+  // Remove domain line
+  yAxisG.select('.domain').remove();
 
   // Create x axis g element
   const xAxisG = g.append('g').call(xAxis)
