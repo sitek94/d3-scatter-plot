@@ -52,6 +52,8 @@ const render = (sourceData) => {
   const margin = { top: 50, right: 20, bottom: 20, left: 100 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
+  
+  const barWidth = innerHeight / data.length;
 
   // x scale
   const xScale = scaleLinear()
@@ -62,10 +64,9 @@ const render = (sourceData) => {
   const xAxis = axisBottom(xScale);
 
   // y scale
-  const yScale = scaleBand()
-    .domain(data.map(yValue))
-    .range([0, innerHeight])
-    .padding(0.2);
+  const yScale = scaleTime()
+    .domain([yMin, yMax])
+    .range([0, innerHeight]);
 
   // y axis
   const yAxis = axisLeft(yScale);
@@ -95,7 +96,7 @@ const render = (sourceData) => {
     .append('rect')
       .attr('class', 'bar')
       .attr('width', (d) => xScale(xValue(d)))
-      .attr('height', (d) => yScale.bandwidth())
+      .attr('height', barWidth)
       .attr('y', (d) => yScale(yValue(d)));
 };
 
