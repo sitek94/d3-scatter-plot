@@ -18,7 +18,7 @@ const url =
 const rootPadding = 50;
 
 // Svg dimensions
-const width = window.innerWidth - rootPadding;
+const width = 1200;
 const height = window.innerHeight - rootPadding;
 
 // Root
@@ -41,12 +41,12 @@ const render = (sourceData) => {
 
   console.log(sourceData);
   
-  const yMin = new Date(sourceData.from_date);
-  const yMax = new Date(sourceData.to_date);
+  const xMin = new Date(sourceData.from_date);
+  const xMax = new Date(sourceData.to_date);
 
   // Value accessors
-  const xValue = (d) => d.value;
-  const yValue = (d) => d.date;
+  const xValue = (d) => d.date;
+  const yValue = (d) => d.value;
 
   // Margins
   const margin = { top: 50, right: 20, bottom: 20, left: 100 };
@@ -56,17 +56,17 @@ const render = (sourceData) => {
   const barWidth = innerHeight / data.length;
 
   // x scale
-  const xScale = scaleLinear()
-    .domain([0, max(data, xValue)])
-    .range([0, innerWidth]);
+  const xScale = scaleTime()
+  .domain([xMin, xMax])
+  .range([0, innerWidth]);
 
   // x axis
   const xAxis = axisBottom(xScale);
 
-  // y scale
-  const yScale = scaleTime()
-    .domain([yMin, yMax])
-    .range([0, innerHeight]);
+  // x scale
+  const yScale = scaleLinear()
+    .domain([0, max(data, yValue)]).nice()
+    .range([innerHeight, 0]);
 
   // y axis
   const yAxis = axisLeft(yScale);
@@ -95,8 +95,9 @@ const render = (sourceData) => {
   g.selectAll('rect').data(data).enter()
     .append('rect')
       .attr('class', 'bar')
-      .attr('width', (d) => xScale(xValue(d)))
-      .attr('height', barWidth)
+      .attr('width', barWidth)
+      .attr('height', (d) => yScale(0) - yScale(yValue(d)))
+      .attr('x', (d) => xScale(xValue(d)))
       .attr('y', (d) => yScale(yValue(d)));
 };
 
