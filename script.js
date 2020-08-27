@@ -17,8 +17,8 @@ const url =
 const rootPadding = 50;
 
 // Svg dimensions
-const width = 500;
-const height = window.innerHeight - 50;
+const width = window.innerWidth - rootPadding;
+const height = window.innerHeight - rootPadding;
 
 // Root
 const root = select('#root');
@@ -35,7 +35,7 @@ const render = (data) => {
   const yValue = (d) => d[0];
 
   // Margins
-  const margin = { top: 20, right: 20, bottom: 20, left: 100 };
+  const margin = { top: 50, right: 20, bottom: 20, left: 100 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
@@ -58,7 +58,8 @@ const render = (data) => {
   // Title 
   g.append('text')
     .attr('id', 'title')
-    .text('Gross Domestic');
+    .attr('y', -10)
+    .text('Gross Domestic Product (GDP)');
 
   // Axes
   g.append('g').call(axisLeft(yScale));
