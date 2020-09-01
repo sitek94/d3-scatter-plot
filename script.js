@@ -6,7 +6,8 @@ const {
   extent,
   axisLeft,
   axisBottom,
-  format
+  format,
+  timeFormat
 } = d3;
 
 // Svg dimensions
@@ -27,7 +28,7 @@ const render = data => {
 
   // Values accessors
   const xValue = d => d.Year;
-  const yValue = d => d.Place;
+  const yValue = d => d.Time;
   // y axis label
   const yAxisLabel = 'Time in minutes';
   
@@ -47,8 +48,8 @@ const render = data => {
     .nice();
   
   // y scale
-  const yScale = scaleLinear()
-  	.domain(extent(data, yValue))
+  const yScale = scaleTime()
+    .domain(extent(data, yValue))
   	.range([0, innerHeight])
   	.nice();
   
@@ -56,8 +57,11 @@ const render = data => {
   const g = svg.append('g')
   	.attr('transform', `translate(${margin.left},${margin.top})`);
   
+  const yAxisTickFormat = timeFormat('%M:%S');
+
   // y axis
   const yAxis = axisLeft(yScale)
+    .tickFormat(yAxisTickFormat)
   	.tickSize(-innerWidth)
   	.tickPadding(20);
   
@@ -95,9 +99,13 @@ const render = data => {
   g.selectAll('circle').data(data)
     .enter().append('circle')
       .attr('class', 'dot')
+      // Position and dimensions
   		.attr('cy', d => yScale(yValue(d)))
   		.attr('cx', d => xScale(xValue(d)))
-  		.attr('r', circleRadius);
+      .attr('r', circleRadius)
+      // Data
+      .attr('data-xvalue', xValue)
+      .attr('data-yvalue', yValue);
   
   // Title
   g.append('text')
@@ -115,6 +123,15 @@ const render = data => {
 json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
   .then(data => {
     console.log(data);
+
+    data.forEach(d => {
+      console.log(d.Time);
+      // Parse time
+      const time = d.Time.split(':');
+      d.Time = new Date(1970, 0, 1, 0, time[0], time[1]);
+
+      console.log(d.Time);
+    })
 
     render(data);
 });
