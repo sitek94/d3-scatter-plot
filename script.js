@@ -1,7 +1,8 @@
 const { 
   select, 
-  csv, 
+  json, 
   scaleLinear,
+  scaleTime,
   extent,
   axisLeft,
   axisBottom,
@@ -14,22 +15,14 @@ const svg = select('svg');
 const width = +svg.attr('width');
 const height = +svg.attr('height');
 
-// d.mpg = +d.mpg;
-// d.cylinders = +d.cylinders;
-// d.horsepower = +d.horsepower;
-// d.weight = +d.weight;
-// d.displacement = +d.displacement;
-// d.acceleration = +d.acceleration;
-// d.year = +d.year;
-
 // render function
 const render = data => {
 	
   // Variables
-  const title = 'Cars: Weight vs. Acceleration';
-  const xValue = d => d.weight;
+  const title = 'Doping in Professional Bicycle Racing';
+  const xValue = d => d.Year;
   const xAxisLabel = 'Weight';
-  const yValue = d => d.acceleration;
+  const yValue = d => d.Place;
 	const yAxisLabel = 'Acceleration';
   const circleRadius = 10;
   const margin = { 
@@ -40,12 +33,12 @@ const render = data => {
   };
   const innerWidth = width - margin.left - margin.right;
 	const innerHeight = height - margin.top - margin.bottom;
-	
+  
   // x scale
   const xScale = scaleLinear()
-  	.domain(extent(data, xValue))
-  	.range([0, innerWidth])
-  	.nice();
+    .domain(extent(data, xValue))
+    .range([0, innerWidth])
+    .nice();
   
   // y scale
   const yScale = scaleLinear()
@@ -80,6 +73,7 @@ const render = data => {
   
   // x axis
   const xAxis = axisBottom(xScale)
+    .tickFormat(format(''))
   	.tickSize(-innerHeight)
   	.tickPadding(20);
   
@@ -107,22 +101,15 @@ const render = data => {
   
   // add title
   g.append('text')
-  	.attr('class', 'title')
+  	.attr('id', 'title')
   	.attr('y', -10)
   	.text(title);
 }
 
-csv('https://vizhub.com/curran/datasets/auto-mpg.csv')
+json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
   .then(data => {
-    data.forEach(d => {
-      d.mpg = +d.mpg;
-      d.cylinders = +d.cylinders;
-      d.horsepower = +d.horsepower;
-      d.weight = +d.weight;
-      d.displacement = +d.displacement;
-      d.acceleration = +d.acceleration;
-      d.year = +d.year;
-    });
+    console.log(data);
+
     render(data);
 });
 
