@@ -20,10 +20,13 @@ const render = data => {
 	
   // Variables
   const title = 'Doping in Professional Bicycle Racing';
+
   const xValue = d => d.Year;
   const xAxisLabel = 'Weight';
+
   const yValue = d => d.Place;
-	const yAxisLabel = 'Acceleration';
+  const yAxisLabel = 'Acceleration';
+  
   const circleRadius = 10;
   const margin = { 
     top: 80, 
@@ -52,7 +55,7 @@ const render = data => {
   // y axis
   const yAxis = axisLeft(yScale)
   	.tickSize(-innerWidth)
-  	.tickPadding(10);
+  	.tickPadding(20);
   
   // y axis g element
   const yAxisG = g.append('g')
