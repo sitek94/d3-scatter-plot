@@ -21,21 +21,22 @@ const svg = select('svg')
 // render function
 const render = data => {
 	
-  // Variables
+  // Title and subtitle
   const title = 'Doping in Professional Bicycle Racing';
+  const subtitle = '35 Fastest times up Alpe d\'Huez';
 
+  // Values accessors
   const xValue = d => d.Year;
-
   const yValue = d => d.Place;
+  // y axis label
   const yAxisLabel = 'Time in minutes';
   
   const circleRadius = 10;
-  const margin = { 
-    top: 80, 
-    right: 20, 
-    bottom: 90, 
-    left: 150 
-  };
+
+  // Margins
+  const margin = { top: 100, right: 20, bottom: 90, left: 150 };
+
+  // Inner width and height
   const innerWidth = width - margin.left - margin.right;
 	const innerHeight = height - margin.top - margin.bottom;
   
@@ -50,7 +51,8 @@ const render = data => {
   	.domain(extent(data, yValue))
   	.range([0, innerHeight])
   	.nice();
-    
+  
+  // Container g element
   const g = svg.append('g')
   	.attr('transform', `translate(${margin.left},${margin.top})`);
   
@@ -63,13 +65,12 @@ const render = data => {
   const yAxisG = g.append('g')
     .call(yAxis);
   	
-  // remove domain and tick lines
+  // Remove domain and tick lines from y axis
   yAxisG.select('.domain').remove();
   
   // y axis label
   yAxisG.append('text')
   	.attr('class', 'axis-label')
-  	.attr('fill', 'black')
   	.attr('text-anchor', 'middle')
   	.attr('x', -innerHeight / 2)
   	.attr('y', -70)
@@ -82,14 +83,14 @@ const render = data => {
   	.tickSize(-innerHeight)
   	.tickPadding(20);
   
-  // append x axis
+  // Append x axis
   const xAxisG = g.append('g').call(xAxis)
   	.attr('transform', `translate(0, ${innerHeight})`);
   
-  // remove domain line
+  // Remove domain line from x axis
   xAxisG.select('.domain').remove();
   
-  // Circles
+  // Append circles
   g.selectAll('circle').data(data)
     .enter().append('circle')
       .attr('class', 'circle')
@@ -97,11 +98,17 @@ const render = data => {
   		.attr('cx', d => xScale(xValue(d)))
   		.attr('r', circleRadius);
   
-  // add title
+  // Title
   g.append('text')
   	.attr('id', 'title')
-  	.attr('y', -10)
-  	.text(title);
+  	.attr('y', -60)
+    .text(title);
+    
+  // Subtitle
+  g.append('text')
+    .attr('id', 'sub-title')
+    .attr('y', -30)
+    .text(subtitle);
 }
 
 json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
