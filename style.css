@@ -36,8 +36,8 @@ text {
   fill: #8E8883;
 }
 
-#y-axis-label {
-  font-size: 1.6em;
+.axis-label {
+  font-size: 2em;
 }
 
 #source-label {
@@ -65,10 +65,10 @@ text {
 
 }
 
-.circle {
+.dot {
   fill: #E3BA22;
 }
 
-.circle:hover {
+.dot:hover {
   fill: white;
 }

@@ -62,13 +62,13 @@ const render = data => {
   	.tickPadding(20);
   
   // y axis g element
-  const yAxisG = g.append('g')
-    .call(yAxis);
+  const yAxisG = g.append('g').call(yAxis)
+    .attr('id', 'y-axis');
   	
   // Remove domain and tick lines from y axis
   yAxisG.select('.domain').remove();
   
-  // y axis label
+  // Y axis label
   yAxisG.append('text')
   	.attr('class', 'axis-label')
   	.attr('text-anchor', 'middle')
@@ -77,14 +77,15 @@ const render = data => {
   	.attr('transform', `rotate(-90)`)
   	.text(yAxisLabel);
   
-  // x axis
+  // X axis
   const xAxis = axisBottom(xScale)
     .tickFormat(format(''))
   	.tickSize(-innerHeight)
   	.tickPadding(20);
   
-  // Append x axis
+  // X axis element
   const xAxisG = g.append('g').call(xAxis)
+    .attr('id', 'x-axis')
   	.attr('transform', `translate(0, ${innerHeight})`);
   
   // Remove domain line from x axis
@@ -93,7 +94,7 @@ const render = data => {
   // Append circles
   g.selectAll('circle').data(data)
     .enter().append('circle')
-      .attr('class', 'circle')
+      .attr('class', 'dot')
   		.attr('cy', d => yScale(yValue(d)))
   		.attr('cx', d => xScale(xValue(d)))
   		.attr('r', circleRadius);
