@@ -22,10 +22,9 @@ const render = data => {
   const title = 'Doping in Professional Bicycle Racing';
 
   const xValue = d => d.Year;
-  const xAxisLabel = 'Weight';
 
   const yValue = d => d.Place;
-  const yAxisLabel = 'Acceleration';
+  const yAxisLabel = 'Time in minutes';
   
   const circleRadius = 10;
   const margin = { 
@@ -86,14 +85,6 @@ const render = data => {
   
   // remove domain line
   xAxisG.select('.domain').remove();
-  
-  // add label
-  xAxisG.append('text')
-  	.attr('class', 'axis-label')
-  	.attr('fill', 'black')
-  	.attr('x', innerWidth / 2)
-  	.attr('y', 80)
-  	.text(xAxisLabel);
   
   // add bars
   g.selectAll('circle').data(data)
