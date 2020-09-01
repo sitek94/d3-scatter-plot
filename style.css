@@ -6,6 +6,13 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #F5F3F2;
 }
 
 text {
@@ -15,16 +22,6 @@ text {
 
 .tick line {
   stroke: #C0C0BB;
-}
-
-#root {
-  height: 100vh;
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: #F5F3F2;
 }
 
 #title {
@@ -68,10 +65,10 @@ text {
 
 }
 
-.bar {
+.circle {
   fill: #E3BA22;
 }
 
-.bar:hover {
+.circle:hover {
   fill: white;
 }

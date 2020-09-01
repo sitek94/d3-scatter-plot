@@ -9,11 +9,14 @@ const {
   format
 } = d3;
 
-const svg = select('svg');
+// Svg dimensions
+const width = 900;
+const height = window.innerHeight;
 
-// get svg dimensions
-const width = +svg.attr('width');
-const height = +svg.attr('height');
+// Set svg dimensions
+const svg = select('svg')
+  .attr('width', width)
+  .attr('height', height);
 
 // render function
 const render = data => {
@@ -86,9 +89,10 @@ const render = data => {
   // remove domain line
   xAxisG.select('.domain').remove();
   
-  // add bars
+  // Circles
   g.selectAll('circle').data(data)
-  	.enter().append('circle')
+    .enter().append('circle')
+      .attr('class', 'circle')
   		.attr('cy', d => yScale(yValue(d)))
   		.attr('cx', d => xScale(xValue(d)))
   		.attr('r', circleRadius);
