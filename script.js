@@ -7,7 +7,8 @@ const {
   axisLeft,
   axisBottom,
   format,
-  timeFormat
+  timeFormat,
+  timeParse
 } = d3;
 
 // Svg dimensions
@@ -40,7 +41,7 @@ const render = data => {
   // Inner width and height
   const innerWidth = width - margin.left - margin.right;
 	const innerHeight = height - margin.top - margin.bottom;
-  
+
   // x scale
   const xScale = scaleLinear()
     .domain(extent(data, xValue))
@@ -57,6 +58,7 @@ const render = data => {
   const g = svg.append('g')
   	.attr('transform', `translate(${margin.left},${margin.top})`);
   
+  // Format ticks to display minutes and seconds
   const yAxisTickFormat = timeFormat('%M:%S');
 
   // y axis
@@ -105,7 +107,7 @@ const render = data => {
       .attr('r', circleRadius)
       // Data
       .attr('data-xvalue', xValue)
-      .attr('data-yvalue', yValue);
+      .attr('data-yvalue', yValue)
   
   // Title
   g.append('text')
@@ -124,13 +126,9 @@ json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master
   .then(data => {
     console.log(data);
 
+    // Parse time in minutes to data objects
     data.forEach(d => {
-      console.log(d.Time);
-      // Parse time
-      const time = d.Time.split(':');
-      d.Time = new Date(1970, 0, 1, 0, time[0], time[1]);
-
-      console.log(d.Time);
+      d.Time = timeParse('%M:%S')(d.Time);
     })
 
     render(data);
