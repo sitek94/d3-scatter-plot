@@ -3,6 +3,7 @@ const {
   json, 
   scaleLinear,
   scaleTime,
+  scaleOrdinal,
   extent,
   axisLeft,
   axisBottom,
@@ -41,6 +42,11 @@ const render = data => {
   // Inner width and height
   const innerWidth = width - margin.left - margin.right;
 	const innerHeight = height - margin.top - margin.bottom;
+
+  // Doping scale for doping allegations or no
+  const dopingScale = scaleOrdinal()
+    .domain(['clear', 'allegations'])
+    .range(['clear', 'allegations'])
 
   // x scale
   const xScale = scaleLinear()
@@ -100,7 +106,6 @@ const render = data => {
   // Append circles
   g.selectAll('circle').data(data)
     .enter().append('circle')
-      .attr('class', 'dot')
       // Position and dimensions
   		.attr('cy', d => yScale(yValue(d)))
   		.attr('cx', d => xScale(xValue(d)))
@@ -108,6 +113,8 @@ const render = data => {
       // Data
       .attr('data-xvalue', xValue)
       .attr('data-yvalue', yValue)
+      // Add class accordingly to doping allegations
+      .attr('class', d => 'dot ' + dopingScale(d.Doping === '' ? 'clear' : 'allegations'));
   
   // Title
   g.append('text')
@@ -129,7 +136,7 @@ json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master
     // Parse time in minutes to data objects
     data.forEach(d => {
       d.Time = timeParse('%M:%S')(d.Time);
-    })
+    });
 
     render(data);
 });

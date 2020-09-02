@@ -66,9 +66,19 @@ text {
 }
 
 .dot {
-  fill: #E3BA22;
+  opacity: .8;
 }
 
-.dot:hover {
-  fill: white;
+.clear {
+  fill: #0F8C79;
+}
+.clear:hover {
+  fill: #6BBBA1;
+}
+
+.allegations {
+  fill: #BD2D28;
+}
+.allegations:hover {
+  fill: #E25A42;
 }
