@@ -26,8 +26,8 @@ const svg = select('svg')
 
 // Doping scale
 const dopingScale = scaleOrdinal()
-  .domain(['clear', 'allegations'])
-  .range(['clear', 'allegations']);
+  .domain(['clean', 'allegations'])
+  .range(['clean', 'allegations']);
 
 // Legend component
 const dopingLegend = (selection, props) => {
@@ -95,7 +95,7 @@ const render = data => {
   // If empty string then there are no allegations
   const parseDoping = doping =>
     doping === "" 
-      ? 'clear'
+      ? 'clean'
       : 'allegations';
 
   // x scale

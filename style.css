@@ -102,10 +102,10 @@ text {
   opacity: .7;
 }
 
-.clear {
+.clean {
   fill: var(--green);
 }
-.clear:hover {
+.clean:hover {
   fill: var(--green-light);
 }
 
