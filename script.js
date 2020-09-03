@@ -16,6 +16,8 @@ const {
 const width = 900;
 const height = window.innerHeight;
 
+const root = select('#root');
+
 // Set svg dimensions
 const svg = select('svg')
   .attr('width', width)
@@ -107,7 +109,7 @@ const render = data => {
   	.nice();
   
   // Container g element
-  const g = svg.append('g')
+  const gContainer = svg.append('g')
   	.attr('transform', `translate(${margin.left},${margin.top})`);
   
   // Format ticks to display minutes and seconds
@@ -120,7 +122,7 @@ const render = data => {
   	.tickPadding(20);
   
   // y axis g element
-  const yAxisG = g.append('g').call(yAxis)
+  const yAxisG = gContainer.append('g').call(yAxis)
     .attr('id', 'y-axis');
   // Remove domain and tick lines from y axis
   yAxisG.select('.domain').remove();
@@ -141,14 +143,37 @@ const render = data => {
   	.tickPadding(20);
   
   // X axis element
-  const xAxisG = g.append('g').call(xAxis)
+  const xAxisG = gContainer.append('g').call(xAxis)
     .attr('id', 'x-axis')
   	.attr('transform', `translate(0, ${innerHeight})`);
   // Remove domain line from x axis
   xAxisG.select('.domain').remove();
   
+  // Tooltip container
+  const tooltip = root.append('div')
+    .attr('id', 'tooltip')
+    .style('opacity', 0);
+
+  // Mouse over handler
+  const handleMouseover = (d, i) => {
+    console.log('hello');
+    tooltip.transition()		
+      .duration(200)		
+      .style("opacity", .9);
+
+    tooltip.html(`text here`)
+      .style("left", (d3.event.pageX) + "px")		
+      .style("top", (d3.event.pageY - 28) + "px");	
+  }
+  // Mouse out handler
+  const handleMouseout = () => {
+    tooltip.transition()		
+      .duration(500)		
+      .style("opacity", 0);	
+  }
+
   // Circles
-  g.selectAll('circle').data(data)
+  gContainer.selectAll('circle').data(data)
     .enter().append('circle')
       // Position and dimensions
   		.attr('cy', d => yScale(yValue(d)))
@@ -158,16 +183,19 @@ const render = data => {
       .attr('data-xvalue', xValue)
       .attr('data-yvalue', yValue)
       // Add class accordingly to doping allegations
-      .attr('class', d => `dot ${parseDoping(d.Doping)}`);
+      .attr('class', d => `dot ${parseDoping(d.Doping)}`)
+      // Event handlers
+      .on('mouseover', handleMouseover)
+      .on('mouseout', handleMouseout);
 
   // Title
-  g.append('text')
+  gContainer.append('text')
   	.attr('id', 'title')
   	.attr('y', -60)
     .text(title);
     
   // Subtitle
-  g.append('text')
+  gContainer.append('text')
     .attr('id', 'sub-title')
     .attr('y', -30)
     .text(subtitle);
