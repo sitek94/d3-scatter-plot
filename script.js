@@ -25,6 +25,7 @@ const dopingScale = scaleOrdinal()
   .domain(['clear', 'allegations'])
   .range(['clear', 'allegations']);
 
+// Legend component
 const dopingLegend = (selection, props) => {
   const { 
     dopingScale, 
@@ -36,15 +37,18 @@ const dopingLegend = (selection, props) => {
   const groups = selection.selectAll('g')
     .data(dopingScale.domain());
 
+  // Legend container
   const groupsEnter = groups.enter().append('g')
     .append('g');
 
+  // Containers
   groupsEnter
     .merge(groups)
       .attr('transform', (d,i) => 
             `translate(0,${i * circleSpacing})`)
     groups.exit().remove();
 
+  // Labels
   groupsEnter
     .append('text')
     .merge(groups.select('text'))
@@ -54,12 +58,12 @@ const dopingLegend = (selection, props) => {
       .attr('x', textOffset)
       .attr('text-anchor', 'end');
 
+  // Circles
   groupsEnter
     .append('circle')
     .merge(groups.select('circle'))
       .attr('class', dopingScale)
       .attr('r', circleRadius);
-
 }
 
 // render function
@@ -118,7 +122,6 @@ const render = data => {
   // y axis g element
   const yAxisG = g.append('g').call(yAxis)
     .attr('id', 'y-axis');
-  	
   // Remove domain and tick lines from y axis
   yAxisG.select('.domain').remove();
   
@@ -141,11 +144,10 @@ const render = data => {
   const xAxisG = g.append('g').call(xAxis)
     .attr('id', 'x-axis')
   	.attr('transform', `translate(0, ${innerHeight})`);
-  
   // Remove domain line from x axis
   xAxisG.select('.domain').remove();
   
-  // Append circles
+  // Circles
   g.selectAll('circle').data(data)
     .enter().append('circle')
       // Position and dimensions
