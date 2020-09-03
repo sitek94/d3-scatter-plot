@@ -44,9 +44,10 @@ const render = data => {
 	const innerHeight = height - margin.top - margin.bottom;
 
   // Doping scale for doping allegations or no
-  const dopingScale = scaleOrdinal()
-    .domain(['clear', 'allegations'])
-    .range(['clear', 'allegations'])
+  const dopingScale = doping =>
+    doping === "" 
+      ? 'clear'
+      : 'allegations';
 
   // x scale
   const xScale = scaleLinear()
@@ -114,8 +115,8 @@ const render = data => {
       .attr('data-xvalue', xValue)
       .attr('data-yvalue', yValue)
       // Add class accordingly to doping allegations
-      .attr('class', d => 'dot ' + dopingScale(d.Doping === '' ? 'clear' : 'allegations'));
-  
+      .attr('class', d => `dot ${dopingScale(d.Doping)}`);
+
   // Title
   g.append('text')
   	.attr('id', 'title')
