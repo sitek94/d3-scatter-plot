@@ -14,7 +14,9 @@ const {
 
 // Svg dimensions
 const width = 900;
-const height = 700;
+const height = window.innerHeight > 700 
+  ? 700
+  : window.innerHeight;
 
 // Root element
 const root = select('#root');
@@ -83,7 +85,7 @@ const render = data => {
   // y axis label
   const yAxisLabel = 'Time in minutes';
   
-  const circleRadius = 15;
+  const circleRadius = 10;
 
   // Margins
   const margin = { top: 100, right: 20, bottom: 90, left: 150 };
@@ -165,7 +167,6 @@ const render = data => {
   const tooltipDetails = tooltip
     .append('p')
     .attr('class', 'tooltip-details');
-    
 
   // Mouse over handler
   const handleMouseover = d => {
@@ -191,7 +192,7 @@ const render = data => {
     tooltipDetails.html(details);
 
     // Offset to position the tooltip depending on its y position
-    const yOffset = d3.event.pageY > 350 ? -170 : 100;
+    const yOffset = d3.event.pageY > height / 2 ? -230 : 20;
 
     // Tooltip position and value attr
     tooltip
@@ -241,7 +242,7 @@ const render = data => {
     .attr('transform', `translate(849,127)`)
     .call(dopingLegend, {
       dopingScale,
-      circleRadius: 20,
+      circleRadius: 15,
       circleSpacing: 50,
       textOffset: -30,
     });
@@ -249,7 +250,6 @@ const render = data => {
 
 json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
   .then(data => {
-    console.log(data);
 
     // Parse time in minutes to data objects
     data.forEach(d => {
@@ -258,13 +258,3 @@ json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master
 
     render(data);
 });
-
-
-
-
-
-
-
-
-
-
