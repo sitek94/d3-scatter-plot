@@ -174,10 +174,6 @@ const render = data => {
     tooltip.transition()		
       .duration(200)		
       .style("opacity", .9);
-
-    // Offsets to position the tooltip depending on the x,y coords
-    const yOffset = d3.event.pageY > 350 ? -100 : 70;
-    const xOffset = d3.event.pageX > 730 ? -100 : 100;
     
     // Update name
     tooltipName.html(`${d.Name}`);
@@ -194,10 +190,13 @@ const render = data => {
     // Update details
     tooltipDetails.html(details);
 
-    // Tooltip text and position
+    // Offset to position the tooltip depending on its y position
+    const yOffset = d3.event.pageY > 350 ? -170 : 100;
+
+    // Tooltip position and value attr
     tooltip
       .attr('data-year', xValue(d))
-      .style("left", (d3.event.pageX + xOffset) + "px")		
+      .style("left", (d3.event.pageX) + "px")		
       .style("top", (d3.event.pageY + yOffset) + "px");
   }
   // Mouse out handler
