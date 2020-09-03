@@ -9,13 +9,14 @@ const {
   axisBottom,
   format,
   timeFormat,
-  timeParse
+  timeParse,
 } = d3;
 
 // Svg dimensions
 const width = 900;
-const height = window.innerHeight;
+const height = 700;
 
+// Root element
 const root = select('#root');
 
 // Set svg dimensions
@@ -23,6 +24,7 @@ const svg = select('svg')
   .attr('width', width)
   .attr('height', height);
 
+// Doping scale
 const dopingScale = scaleOrdinal()
   .domain(['clear', 'allegations'])
   .range(['clear', 'allegations']);
@@ -156,14 +158,20 @@ const render = data => {
 
   // Mouse over handler
   const handleMouseover = (d, i) => {
-    console.log('hello');
+
+    // Show tooltip transition
     tooltip.transition()		
       .duration(200)		
       .style("opacity", .9);
 
+    // Offsets to position the tooltip depending on the x,y coords
+    const yOffset = d3.event.pageY > 350 ? -50 : 70;
+    const xOffset = d3.event.pageX > 730 ? -50 : 100;
+
+    // Tooltip text and position
     tooltip.html(`text here`)
-      .style("left", (d3.event.pageX) + "px")		
-      .style("top", (d3.event.pageY - 28) + "px");	
+      .style("left", (d3.event.pageX + xOffset) + "px")		
+      .style("top", (d3.event.pageY + yOffset) + "px");
   }
   // Mouse out handler
   const handleMouseout = () => {
