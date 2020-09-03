@@ -34,7 +34,7 @@ const render = data => {
   // y axis label
   const yAxisLabel = 'Time in minutes';
   
-  const circleRadius = 10;
+  const circleRadius = 15;
 
   // Margins
   const margin = { top: 100, right: 20, bottom: 90, left: 150 };

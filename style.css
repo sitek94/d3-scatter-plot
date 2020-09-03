@@ -1,3 +1,16 @@
+:root {
+  --green: #0F8C79;
+  --green-light: #6BBBA1;
+  --red: #BD2D28;
+  --red-light: #E25A42;
+
+  --white: #fff;
+  --gray-10: #F5F3F2;
+  --gray-20: #C0C0BB;
+  --gray-30: #8E8883;
+  --gray-40: #635F5D;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -12,28 +25,28 @@ body {
   align-items: center;
   justify-content: center;
 
-  background-color: #F5F3F2;
+  background-color: var(--gray-10);
 }
 
 text {
-  fill: #635F5D;
+  fill: var(--gray-40);
   font-size: 1.4em;
 }
 
 .tick line {
-  stroke: #C0C0BB;
+  stroke: var(--gray-20);
 }
 
 #title {
   text-align: left;
   font-size: 2em;
   font-weight: 500;
-  fill:  #635F5D;
+  fill:  var(--gray-40);
 }
 
 #sub-title {
   font-size: 1.6em;
-  fill: #8E8883;
+  fill: var(--gray-30);
 }
 
 .axis-label {
@@ -50,7 +63,7 @@ text {
   height: 60px;
   padding: 5px 0;
   border-radius: 6px;
-  color: #fff;
+  color: var(--white);
   background-color: rgba(0,0,0, .5);
   text-align: center;
  
@@ -70,15 +83,15 @@ text {
 }
 
 .clear {
-  fill: #0F8C79;
+  fill: var(--green);
 }
 .clear:hover {
-  fill: #6BBBA1;
+  fill: var(--green-light);
 }
 
 .allegations {
-  fill: #BD2D28;
+  fill: var(--red);
 }
 .allegations:hover {
-  fill: #E25A42;
+  fill: var(--red-light);
 }
