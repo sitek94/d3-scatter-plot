@@ -48,7 +48,7 @@ const dopingLegend = (selection, props) => {
   // Containers
   groupsEnter
     .merge(groups)
-      .attr('transform', (d,i) => 
+      .attr('transform', (d, i) => 
             `translate(0,${i * circleSpacing})`)
     groups.exit().remove();
 
@@ -156,8 +156,19 @@ const render = data => {
     .attr('id', 'tooltip')
     .style('opacity', 0);
 
+  // Tooltip header 
+  const tooltipName = tooltip
+    .append('h3')
+    .attr('class', 'tooltip-name');
+  
+  // Tooltip details
+  const tooltipDetails = tooltip
+    .append('p')
+    .attr('class', 'tooltip-details');
+    
+
   // Mouse over handler
-  const handleMouseover = (d, i) => {
+  const handleMouseover = d => {
 
     // Show tooltip transition
     tooltip.transition()		
@@ -165,11 +176,27 @@ const render = data => {
       .style("opacity", .9);
 
     // Offsets to position the tooltip depending on the x,y coords
-    const yOffset = d3.event.pageY > 350 ? -50 : 70;
-    const xOffset = d3.event.pageX > 730 ? -50 : 100;
+    const yOffset = d3.event.pageY > 350 ? -100 : 70;
+    const xOffset = d3.event.pageX > 730 ? -100 : 100;
+    
+    // Update name
+    tooltipName.html(`${d.Name}`);
+
+    // Construct details
+    const details = [
+      `Nationality: ${d.Nationality}`,
+      `Year: ${d.Year}`,
+      `Place: ${d.Place}`,
+      `Time: ${yAxisTickFormat(d.Time)}`,
+      `Doping: ${d.Doping === '' ? 'No allegations' : d.Doping}`
+    ].join('<br>');
+    
+    // Update details
+    tooltipDetails.html(details);
 
     // Tooltip text and position
-    tooltip.html(`text here`)
+    tooltip
+      .attr('data-year', xValue(d))
       .style("left", (d3.event.pageX + xOffset) + "px")		
       .style("top", (d3.event.pageY + yOffset) + "px");
   }
@@ -210,6 +237,7 @@ const render = data => {
 
   // Legend
   svg.append('g')
+    .attr('id', 'legend')
     // Position in the top right corner
     .attr('transform', `translate(849,127)`)
     .call(dopingLegend, {
