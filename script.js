@@ -21,6 +21,47 @@ const svg = select('svg')
   .attr('width', width)
   .attr('height', height);
 
+const dopingScale = scaleOrdinal()
+  .domain(['clear', 'allegations'])
+  .range(['clear', 'allegations']);
+
+const dopingLegend = (selection, props) => {
+  const { 
+    dopingScale, 
+    circleRadius,
+    circleSpacing,
+    textOffset
+  } = props;
+
+  const groups = selection.selectAll('g')
+    .data(dopingScale.domain());
+
+  const groupsEnter = groups.enter().append('g')
+    .append('g');
+
+  groupsEnter
+    .merge(groups)
+      .attr('transform', (d,i) => 
+            `translate(0,${i * circleSpacing})`)
+    groups.exit().remove();
+
+  groupsEnter
+    .append('text')
+    .merge(groups.select('text'))
+      .text(d => d)
+      // Center text vertically trick
+      .attr('dy', '0.32em')
+      .attr('x', textOffset)
+      .attr('text-anchor', 'end');
+
+  groupsEnter
+    .append('circle')
+    .merge(groups.select('circle'))
+      .attr('class', dopingScale)
+      .attr('r', circleRadius);
+
+}
+
 // render function
 const render = data => {
 	
@@ -43,8 +84,8 @@ const render = data => {
   const innerWidth = width - margin.left - margin.right;
 	const innerHeight = height - margin.top - margin.bottom;
 
-  // Doping scale for doping allegations or no
-  const dopingScale = doping =>
+  // If empty string then there are no allegations
+  const parseDoping = doping =>
     doping === "" 
       ? 'clear'
       : 'allegations';
@@ -115,7 +156,7 @@ const render = data => {
       .attr('data-xvalue', xValue)
       .attr('data-yvalue', yValue)
       // Add class accordingly to doping allegations
-      .attr('class', d => `dot ${dopingScale(d.Doping)}`);
+      .attr('class', d => `dot ${parseDoping(d.Doping)}`);
 
   // Title
   g.append('text')
@@ -128,6 +169,17 @@ const render = data => {
     .attr('id', 'sub-title')
     .attr('y', -30)
     .text(subtitle);
+
+  // Legend
+  svg.append('g')
+    // Position in the top right corner
+    .attr('transform', `translate(849,127)`)
+    .call(dopingLegend, {
+      dopingScale,
+      circleRadius: 20,
+      circleSpacing: 50,
+      textOffset: -30,
+    });
 }
 
 json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
