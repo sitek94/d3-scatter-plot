@@ -14,15 +14,14 @@ const {
 
 // Svg dimensions
 const width = 900;
-const height = window.innerHeight > 700 
-  ? 700
-  : window.innerHeight;
+const height = 700;
 
 // Root element
 const root = select('#root');
 
 // Set svg dimensions
 const svg = select('svg')
+  .attr('viewBox', `0 0 ${width} ${height}`)
   .attr('width', width)
   .attr('height', height);
 
@@ -88,7 +87,7 @@ const render = data => {
   const circleRadius = 10;
 
   // Margins
-  const margin = { top: 100, right: 20, bottom: 90, left: 150 };
+  const margin = { top: 100, right: 50, bottom: 90, left: 120 };
 
   // Inner width and height
   const innerWidth = width - margin.left - margin.right;
